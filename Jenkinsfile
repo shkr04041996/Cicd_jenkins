@@ -90,7 +90,7 @@ pipeline{
                         nexusUrl: '54.144.73.99:8081', 
                         nexusVersion: 'nexus3', 
                         protocol: 'http', 
-                        repository: nexusRepo, 
+                        repository: demoapp-release, 
                         version: "${readMavenPom.version}"
                     }
                 }
