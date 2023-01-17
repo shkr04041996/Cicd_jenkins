@@ -14,7 +14,7 @@ pipeline{
                 }
             }
         }
-    /*    stage('UNIT testing'){
+        stage('UNIT testing'){
             
             steps{
                 
@@ -44,7 +44,7 @@ pipeline{
                 }
             }
         }
-        stage('Static code analysis'){
+      /*  stage('Static code analysis'){
             
             steps{
                 
