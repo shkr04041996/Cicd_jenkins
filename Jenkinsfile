@@ -92,7 +92,7 @@ pipeline{
                         protocol: 'http', 
                         repository: 'demoapp-release', 
                         /*version: "${readMavenPomVersion.version}"*/
-                        version: '1.0.1'
+                        version: '2.0.0'
                     }
                 }
             }
