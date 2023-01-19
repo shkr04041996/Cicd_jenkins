@@ -1,7 +1,18 @@
 pipeline{
     
     agent any 
-    
+
+    parameters{
+
+        choice(name: 'action', choices: 'create\ndestroy\ndestroyekscluster', description: 'create/update or destroy the eks cluster')
+        string(name: 'cluster', defaultValue: 'demo-cluster', description: 'Eks cluster name')
+        string(name: 'region', defaultValue: 'us-east-1', description: 'Eks cluster region')
+    }
+    environment{
+
+        ACCESS_KEY = credentials('aws_access_key_id')
+        SECRET_KEY = credentials('aws_secret_access_key')
+    }
     stages {
         
         stage('Git Checkout'){
@@ -68,64 +79,16 @@ pipeline{
                     }
                 }
             }
-            stage('upload war file to nexus'){
-
+            stage('eks connect'){
                 steps{
-
-                    script{
-                        def readMavenPomVersion = readMavenPom file: 'pom.xml'
-                       /* def nexusRepo = readMavenPomVersion.version.endsWith{"SNAPSHOT"} ? "demoapp-snapshot" : "demoapp-release"*/
-
-                        nexusArtifactUploader artifacts: 
-                        [
-                            [
-                                artifactId: 'springboot',
-                                classifier: '',
-                                file: 'target/Uber.jar', 
-                                type: 'jar'
-                                ]
-                        ], 
-                        credentialsId: 'nexus-auth',
-                        groupId: 'com.example',
-                        nexusUrl: '54.144.73.99:8081', 
-                        nexusVersion: 'nexus3', 
-                        protocol: 'http', 
-                        repository: 'demoapp-release', 
-                        version: "${readMavenPomVersion.version}"
-                        /*version: '2.0.0'*/
-                    }
-                }
-            }
-            stage('docker image build'){
-
-                steps{
-
-                    script{
-
-                        sh 'docker image build -t $JOB_NAME:v1.$BUILD_ID .'
-                        sh 'docker image tag $JOB_NAME:v1.$BUILD_ID shkr04041996/$JOB_NAME:v1.$BUILD_ID'
-                        sh 'docker image tag $JOB_NAME:v1.$BUILD_ID shkr04041996/$JOB_NAME:latest'
-                    }
-
-                }
-
-            }
-            stage('push image to the dockerhub'){
-
-                steps{
-
-                    script{
-
-                        withCredentials([string(credentialsId: 'dockerhub_cred', variable: 'docker_hub_cred')]) {
-
-                            sh 'docker login -u shkr04041996 -p ${docker_hub_cred}'
-                            sh 'docker image push shkr04041996/$JOB_NAME:v1.$BUILD_ID'
-                            sh 'docker image push shkr04041996/$JOB_NAME:latest'
-
-                    }
-                    }
+                   sh """
+                       aws configure set aws_access_key_id "$ACCESS_KEY"
+                       aws configure set aws_secret_access_key "$SECRET_KEY"
+                       aws configure set region ""
+                       aws eks --region ${params.region} update-kubeconfig --name ${params.cluster}
+                      """;
                 }
             }
         }
+    }
         
-}

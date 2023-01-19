@@ -1,0 +1,20 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: mydeployment
+spec: 
+  replicas: 2
+  selector:
+    matchLabels:
+      app: myspringbootaap
+  template:
+    metadata:
+      labels:
+         app: myspringbootaap
+    spec:
+      containers:
+        - name: myspringbootaap
+          image: shkr04041996/demo_project:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 9099
