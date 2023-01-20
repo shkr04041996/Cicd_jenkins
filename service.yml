@@ -7,7 +7,7 @@ metadata:
 spec:
   selector:
     app: myspringbootaap
-  type: LoadBalancer
+  type: NodePort
   ports:
   - NodePort: 30036
     port: 80
