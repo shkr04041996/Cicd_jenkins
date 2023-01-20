@@ -107,6 +107,7 @@ pipeline{
 
                             sh """
                                    cd /var/lib/jenkins/workspace/demo_project
+                                   pwd
                                    Kubectl apply -f  .
                                 """
                         }
