@@ -106,7 +106,7 @@ pipeline{
                         if(apply){
 
                             sh """
-                                   cd ../$JOB_NAME 
+                                   cd /var/lib/jenkins/workspace/demo_project
                                    Kubectl apply -f  .
                                 """
                         }
