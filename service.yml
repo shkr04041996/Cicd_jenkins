@@ -15,5 +15,5 @@ spec:
   ports:
   - port: 80
     targetPort: 9099
-    nodePort: 30032
+    nodePort: 30033
  
