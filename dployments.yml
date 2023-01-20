@@ -2,8 +2,6 @@ kind: Deployment
 apiVersion: apps/v1
 metadata:
   name: mydeployment
-  labels:
-    app: myspringbootaap
 spec: 
   replicas: 2
   selector:

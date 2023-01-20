@@ -2,12 +2,14 @@ kind: Service
 apiVersion: v1
 metadata: 
   name: myservice
+  labels:
+    app: myspringbootaap
 spec:
   selector:
     app: myspringbootaap
   type: LoadBalancer
   ports:
-  - NodePort: 30036
+  - nodePort: 30036
     port: 80
     targetPort: 9099
  
