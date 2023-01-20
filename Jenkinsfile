@@ -86,7 +86,7 @@ pipeline{
                        aws configure set aws_secret_access_key "$SECRET_KEY"
                        aws configure set region ""
                        aws eks --region ${params.region} update-kubeconfig --name ${params.cluster}
-                      """;
+                      """
                 }
             }
             stage('eks deployments'){
