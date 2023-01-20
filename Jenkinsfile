@@ -106,6 +106,7 @@ pipeline{
                         if(apply){
 
                             sh """
+                                   cd ../$JOB_NAME 
                                    Kubectl apply -f  .
                                 """
                         }
