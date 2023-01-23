@@ -79,6 +79,34 @@ pipeline{
                     }
                 }
             }
+            stage('upload war file to nexus'){
+
+                steps{
+
+                    script{
+                        def readMavenPomVersion = readMavenPom file: 'pom.xml'
+                       /* def nexusRepo = readMavenPomVersion.version.endsWith{"SNAPSHOT"} ? "demoapp-snapshot" : "demoapp-release"*/
+
+                        nexusArtifactUploader artifacts: 
+                        [
+                            [
+                                artifactId: 'springboot',
+                                classifier: '',
+                                file: 'target/Uber.jar', 
+                                type: 'jar'
+                                ]
+                        ], 
+                        credentialsId: 'nexus-auth',
+                        groupId: 'com.example',
+                        nexusUrl: '54.144.73.99:8081', 
+                        nexusVersion: 'nexus3', 
+                        protocol: 'http', 
+                        repository: 'demoapp-release', 
+                        version: "${readMavenPomVersion.version}"
+                        /*version: '2.0.0'*/
+                    }
+                }
+            }
             stage('docker image build'){
 
                 steps{
