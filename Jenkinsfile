@@ -148,7 +148,7 @@ pipeline{
                 }
             }
 //            stage('eks deployments'){
-//              when{ expression { params.action == 'create'}}
+//              when{ expression { params.action == create}}
 //                steps{
 
 //                    script{
